@@ -6,10 +6,14 @@ pub enum ItemType {
     Done(Done),
 }
 
-pub fn to_do_factory(item_type: &str, title: &str) -> Result<ItemType, &'static str> {
+pub fn to_do_factory(
+    item_type: &str,
+    title: &str,
+    last_update: &str,
+) -> Result<ItemType, &'static str> {
     match item_type {
-        "pending" => Ok(ItemType::Peding(Pending::new(title))),
-        "done" => Ok(ItemType::Done(Done::new(title))),
+        "pending" => Ok(ItemType::Peding(Pending::new(title, last_update))),
+        "done" => Ok(ItemType::Done(Done::new(title, last_update))),
         _ => Err("This is not accepted"),
     }
 }

@@ -6,8 +6,8 @@ pub struct Done {
 }
 
 impl Done {
-    pub fn new(title: &str) -> Self {
-        let base = Base::new(title, "done");
+    pub fn new(title: &str, last_update: &str) -> Self {
+        let base = Base::new(title, "done", last_update);
 
         Self { super_struct: base }
     }

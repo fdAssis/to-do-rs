@@ -6,8 +6,8 @@ pub struct Pending {
 }
 
 impl Pending {
-    pub fn new(title: &str) -> Self {
-        let base = Base::new(title, "pending");
+    pub fn new(title: &str, last_update: &str) -> Self {
+        let base = Base::new(title, "pending", last_update);
 
         Self { super_struct: base }
     }
