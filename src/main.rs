@@ -1,17 +1,36 @@
+mod processes;
+mod state;
 mod to_do;
-use to_do::structs::traits::create::Create;
-use to_do::structs::{done::Done, pending::Pending};
+use chrono::Local;
+use processes::process_input;
+use serde_json::value::Value;
+use serde_json::Map;
+use state::read_file;
+use std::env;
 use to_do::to_do_factory;
-use to_do::ItemType;
+
+pub const FILE: &str = "state.json";
 
 fn main() {
-    let to_do_item = to_do_factory("pending", "washing");
+    let last_update: String = format!("{}", Local::now().format("%e/%b/%Y-%H:%M:%S"));
 
-    match to_do_item.unwrap() {
-        ItemType::Peding(item) => item.create(&item.super_struct.title),
-        ItemType::Done(item) => println!(
-            "it's a done item with the title: {}",
-            item.super_struct.title
-        ),
+    let args: Vec<String> = env::args().collect();
+
+    let command: &String = &args[1];
+    let mut title: &String = &String::from("");
+
+    if args.len() >= 3 {
+        title = &args[2]
     }
+
+    let state: Map<String, Value> = read_file(FILE);
+
+    let status: String;
+
+    match &state.get(*&title) {
+        Some(result) => status = result.get("status").unwrap().to_string().replace('\"', ""),
+        None => status = String::from("pending"),
+    }
+    let item = to_do_factory(&status, title, &last_update).expect(&status);
+    process_input(item, command.to_string(), &state);
 }
