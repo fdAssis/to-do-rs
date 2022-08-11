@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 chrono = "0.4"
+comfy-table = "6.0.0"
